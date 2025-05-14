@@ -20,5 +20,10 @@ namespace EmprestimosWall.Controllers
             IEnumerable<EmprestimosModel> emprestimos = _context.Emprestimos; 
             return View(emprestimos);
         }
+        public IActionResult Cadastrar()
+        {
+            
+            return View();
+        }
     }
 }
