@@ -72,6 +72,8 @@ namespace EmprestimosWall.Controllers
                 _context.Emprestimos.Add(emprestimos);
                 _context.SaveChanges();
 
+                TempData["MensagemSucesso"] = "Cadastro realizado com sucesso!";
+
                 return RedirectToAction("Index");
             }
             return View();
@@ -86,8 +88,12 @@ namespace EmprestimosWall.Controllers
             {
                 _context.Emprestimos.Update(emprestimo);
                 _context.SaveChanges();
+
+                TempData["MensagemSucesso"] = "Edição realizado com sucesso!";
+
                 return RedirectToAction("Index");
             }
+            
             return View(emprestimo);
         }
 
@@ -102,6 +108,9 @@ namespace EmprestimosWall.Controllers
 
             _context.Emprestimos.Remove(emprestimo);
             _context.SaveChanges();
+
+            TempData["MensagemSucesso"] = "Remoção realizada com sucesso!";
+
             return RedirectToAction("Index");
         }
     }

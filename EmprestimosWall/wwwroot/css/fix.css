@@ -1,0 +1,18 @@
+/* Forçar layout flex para ocupar altura total da tela */
+html, body {
+    height: 100% !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* O <main> cresce para ocupar o espaço restante */
+main {
+    flex: 1 0 auto !important;
+}
+
+/* O <footer> vai para o final automaticamente */
+footer {
+    margin-top: auto !important;
+    position: relative !important;
+}
