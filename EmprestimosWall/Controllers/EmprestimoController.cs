@@ -1,6 +1,8 @@
-﻿using EmprestimosWall.Data;
+﻿using ClosedXML.Excel;
+using EmprestimosWall.Data;
 using EmprestimosWall.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace EmprestimosWall.Controllers
 {
@@ -64,6 +66,48 @@ namespace EmprestimosWall.Controllers
             return View(emprestimo);
         }
 
+        [HttpGet]
+        public IActionResult Exportar()
+        { 
+            var dados = GetDados();
+
+            using (XLWorkbook workbook = new XLWorkbook())
+            {
+                workbook.AddWorksheet(dados, "Dados Emprestimo");
+
+                using MemoryStream ms = new MemoryStream();
+                {
+                    workbook.SaveAs(ms);
+                    return File(ms.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Emprestimo.Xls");
+                       
+                }
+            }
+            return Ok(); 
+        }
+            
+        private DataTable GetDados()
+        {
+            
+            DataTable dataTable = new DataTable();
+
+            dataTable.TableName = "Dados emprestimo";
+
+            dataTable.Columns.Add("Recebedor", typeof(string));
+            dataTable.Columns.Add("Fornecedor", typeof(string));
+            dataTable.Columns.Add("Livro", typeof(string));
+            dataTable.Columns.Add("Data Emprestimo", typeof(DateTime));
+
+            var dados = _context.Emprestimos.ToList();
+
+            if(dados.Count > 0)
+            {
+                dados.ForEach(empretimo =>
+                { dataTable.Rows.Add(empretimo.Recebedor, empretimo.Fornecedor, empretimo.LivroEmprestado, empretimo.DataEmprestimo); });
+
+            }
+            return dataTable;
+        }
+
         [HttpPost]
         public IActionResult Cadastrar(EmprestimosModel emprestimos)
         {
@@ -86,7 +130,14 @@ namespace EmprestimosWall.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Emprestimos.Update(emprestimo);
+                var emprestimoDb = _context.Emprestimos.Find(emprestimo.Id);
+
+                emprestimoDb.Fornecedor = emprestimo.Fornecedor;
+                emprestimoDb.Recebedor = emprestimo.Recebedor;
+                emprestimo.LivroEmprestado = emprestimo.LivroEmprestado;
+
+
+                _context.Emprestimos.Update(emprestimoDb);
                 _context.SaveChanges();
 
                 TempData["MensagemSucesso"] = "Edição realizado com sucesso!";
