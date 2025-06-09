@@ -1,4 +1,6 @@
 using EmprestimosWall.Data;
+using EmprestimosWall.Services.LoginService;
+using EmprestimosWall.Services.SenhaService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<ISenhaService, SenhaService>();
 
 var app = builder.Build();
 

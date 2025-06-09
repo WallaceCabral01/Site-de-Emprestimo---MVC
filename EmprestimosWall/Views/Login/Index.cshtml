@@ -1,19 +1,25 @@
-﻿@if (TempData["MensagemSucesso"] != null)
+﻿@if (TempData["MenssagemSucesso"] != null)
 {
     <div class="alert alert-success text-light" role="alert">
-        @TempData["MensagemSucesso"]
+        @TempData["MenssagemSucesso"]
+    </div>
+}
+@if (TempData["ErroMenssagem"] != null)
+{
+    <div class="alert alert-success text-light" role="alert">
+        @TempData["ErroMenssagem"]
     </div>
 }
 
-<div class="container bg-dark-subtle  p-5 rounded-5">
+<div class="container bg-light  p-5 rounded-5">
     <form>
         <div class="form-group">
             <label for="Email">Email:</label>
-            <input type="email" class="form-control" id="Email1" placeholder="Digite o email">
+            <input type="email" class="form-control" id="Email1">
         </div>
         <div class="form-group">
             <label for="senha">Senha:</label>
-            <input type="password" class="form-control" id="Senha" placeholder="Digite a senha">
+            <input type="password" class="form-control" id="Senha">
         </div>
 
         <div class="d-flex justify-content-center">

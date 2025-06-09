@@ -1,25 +1,53 @@
-﻿@if (TempData["MensagemSucesso"] != null)
+﻿@using EmprestimosWall.Dto
+@model UsuarioRegisterDto
+
+<h1>Cadastro de Usuários</h1>
+
+@if (TempData["MenssagemSucesso"] != null)
 {
     <div class="alert alert-success text-light" role="alert">
-        @TempData["MensagemSucesso"]
+        @TempData["MenssagemSucesso"]
+    </div>
+}
+@if (TempData["ErroMenssagem"] != null)
+{
+    <div class="alert alert-danger text-light" role="alert">
+        @TempData["ErroMenssagem"]
     </div>
 }
 
-<div class="container bg-dark-subtle  p-5 rounded-5">
-    <form>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<div class="container bg-light p-5 rounded-5">
+    <form asp-action="Registrar" aps-asp-controller="Login" method="post" >
         <div class="form-group">
             <label for="Email">Email:</label>
-            <input type="email" class="form-control" id="Email1" placeholder="Digite o email">
+            <input type="email" class="form-control" id="Email" name="Email" asp-for="Email">
         </div>
+
         <div class="form-group">
-            <label for="senha">Senha:</label>
-            <input type="password" class="form-control" id="Senha" placeholder="Digite a senha">
+            <label for="Nome">Nome:</label>
+            <input type="text" class="form-control" id="Nome" name="Nome" asp-for="Nome">
         </div>
 
-        <div class="d-flex justify-content-center">
-            <button type="submit" class="btn btn-primary w-25 mx-2">Entrar</button>
-            <a class="btn w-25 " asp-controller="Login" asp-action="Registrar">Cadastra-se</a>
+        <div class="form-group">
+            <label for="Sobrenome">Sobrenome:</label>
+            <input type="text" class="form-control" id="Sobrenome" name="Sobrenome" asp-for="Sobrenome">
         </div>
 
+        <div class="form-group">
+            <label for="Senha">Senha:</label>
+            <input type="password" class="form-control" id="Senha" name="Senha" asp-for="Senha">
+        </div>
+
+        <div class="form-group">
+            <label for="ConfirmarSenha">Confirme a senha:</label>
+            <input type="password" class="form-control" id="ConfirmarSenha" name="ConfirmarSenha">
+        </div>
+
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-primary w-25 mx-2">Cadastrar</button>
+            <a class="btn btn-secondary w-25" asp-controller="Login" asp-action="Index">Voltar</a>
+        </div>
     </form>
 </div>
