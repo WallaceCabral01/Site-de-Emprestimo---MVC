@@ -17,6 +17,10 @@ namespace EmprestimosWall.Controllers
         {
             return View();
         }
+        public IActionResult Front()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {

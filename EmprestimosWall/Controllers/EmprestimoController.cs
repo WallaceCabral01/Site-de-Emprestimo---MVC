@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using EmprestimosWall.Data;
 using EmprestimosWall.Models;
+using EmprestimosWall.Services.SessaoService;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
@@ -11,21 +12,27 @@ namespace EmprestimosWall.Controllers
     {
 
         readonly private ApplicationDbContext _context;
+        readonly private ISessaoService _sessaoService;
 
-        public EmprestimoController(ApplicationDbContext context)
+        public EmprestimoController(ApplicationDbContext context,ISessaoService sessaoService)
         {
             _context = context;
+            _sessaoService = sessaoService;
         }
 
         public IActionResult Index()
         {
+       
+
             IEnumerable<EmprestimosModel> emprestimos = _context.Emprestimos;
             return View(emprestimos);
         }
+        
 
         [HttpGet]
         public IActionResult Cadastrar()
         {
+            
 
             return View();
         }
@@ -33,6 +40,12 @@ namespace EmprestimosWall.Controllers
         [HttpGet]
         public IActionResult Editar(int? id)
         {
+            var usuario = _sessaoService.BuscarSessao();
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -51,6 +64,11 @@ namespace EmprestimosWall.Controllers
         [HttpGet]
         public IActionResult Excluir(int? id)
         {
+            var usuario = _sessaoService.BuscarSessao();
+            if (usuario == null)
+            {
+                return RedirectToAction("Login", "Login");
+            }
             if (id == null || id == 0)
             {
                 return NotFound();
@@ -113,6 +131,7 @@ namespace EmprestimosWall.Controllers
         {
             if (ModelState.IsValid)
             {
+                emprestimos.DataEmprestimo = DateTime.Now;
                 _context.Emprestimos.Add(emprestimos);
                 _context.SaveChanges();
 
@@ -134,8 +153,9 @@ namespace EmprestimosWall.Controllers
 
                 emprestimoDb.Fornecedor = emprestimo.Fornecedor;
                 emprestimoDb.Recebedor = emprestimo.Recebedor;
-                emprestimo.LivroEmprestado = emprestimo.LivroEmprestado;
+                emprestimoDb.LivroEmprestado = emprestimo.LivroEmprestado;
 
+                emprestimoDb.DataEmprestimo = DateTime.Now;
 
                 _context.Emprestimos.Update(emprestimoDb);
                 _context.SaveChanges();

@@ -6,5 +6,6 @@ namespace EmprestimosWall.Services.LoginService
     public interface ILoginService
     {
         Task<ResponseModel<UsuarioModel>> RegistrarUsuario(UsuarioRegisterDto usuarioRegisterDto);
+        Task<ResponseModel<UsuarioModel>> Login(UsuarioLoginDto usuarioLoginDto);
     }
 }
